@@ -1,0 +1,10 @@
+# 环境变量（包含 API Key）
+.env
+
+# 向量数据库（包含文档内容）
+chroma_db/
+test_chroma_db/
+
+# Python 缓存
+__pycache__/
+*.pyc

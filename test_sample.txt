@@ -1,0 +1,6 @@
+
+LangChain 是一个用于构建大语言模型应用的框架。
+它提供了链（Chain）、Agent、工具（Tool）等核心组件。
+LangChain 支持 OpenAI、Anthropic、本地模型等多种大模型。
+RAG（检索增强生成）是 LangChain 最常用的应用场景之一。
+Chroma 是一个轻量级的向量数据库，适合本地开发和测试。
