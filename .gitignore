@@ -12,3 +12,7 @@ __pycache__/
 
 # VS Code 配置
 .vscode/
+
+* text=auto
+*.py text eol=lf
+*.md text eol=lf

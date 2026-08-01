@@ -1,97 +1,157 @@
-# 📚 RAG 知识问答助手
+## 项目一：命令行知识问答助手（第 1-2 周）
 
-> 项目一：边做边学 AI Agent 开发
-> 技术栈：LangChain + DeepSeek + Chroma
+### 目标
+做一个能从本地 PDF/TXT 文件中检索信息并回答问题的命令行工具。
 
-## 这是什么
+### 做完你会什么
+- 大模型 API 调用
+- Prompt 工程基础
+- 文本切分 + Embedding + 向量存储
+- 基础 RAG 流程
 
-一个命令行工具，能读取你的 PDF/TXT 文档，然后用自然语言向它提问，它会基于文档内容给出回答。
+### 知识点（边做边查）
+| 做的时候遇到 | 去学什么 |
+|-------------|---------|
+| 怎么调大模型 API | OpenAI / DeepSeek API 文档，同步调用 vs 流式输出 |
+| 怎么把文档变成向量 | Embedding 原理，推荐用 `text-embedding-3-small` 或 BGE |
+| 文档太长怎么办 | 文本切分策略：chunk_size、chunk_overlap 怎么选 |
+| 向量存哪里 | Chroma 本地存储，上手最简单 |
+| 怎么把检索结果拼给模型 | Prompt 模板设计，上下文窗口控制 |
 
-这就是最基础的 **RAG（检索增强生成）** 系统，是所有 AI Agent 应用的核心能力。
-
-## 快速开始
-
-### 1. 安装依赖
-
-```bash
-cd rag-assistant
-pip install -r requirements.txt
-```
-
-### 2. 配置 API Key
-
-```bash
-cp .env.example .env
-```
-
-然后编辑 `.env` 文件，填入你的 API Key：
-- **DeepSeek**（推荐）：去 https://platform.deepseek.com 注册，有免费额度
-- **OpenAI**：如果你有 OpenAI 的 Key 也可以用
-
-### 3. 加载文档
-
-把你的 PDF 或 TXT 文件放在项目目录下，然后：
-
-```bash
-python main.py load 你的文档.pdf
-```
-
-### 4. 开始提问
-
-```bash
-# 单次提问
-python main.py ask "这篇文档讲了什么？"
-
-# 多轮对话模式
-python main.py chat
-```
-
-## 项目结构
-
-```
-rag-assistant/
-├── main.py          # 入口文件，命令行交互
-├── rag.py           # RAG 核心逻辑（重点看这个）
-├── requirements.txt # Python 依赖
-├── .env.example     # API Key 配置模板
-├── .env             # 你的 API Key（不要提交到 git）
-└── chroma_db/       # 向量数据库（运行后自动生成）
-```
-
-## 学习重点
-
-这个项目虽小，但覆盖了 RAG 的完整链路：
-
-```
-文档加载 → 文本切分 → Embedding向量化 → 向量存储 → 相似度检索 → 拼Prompt → 大模型回答
-```
-
-### 关键概念
-
-| 概念 | 解释 | 在代码里的位置 |
-|------|------|--------------|
-| Document Loader | 把文件读进内存 | `rag.py` → `load_document()` |
-| Text Splitter | 把长文档切成小块 | `rag.py` → `split_documents()` |
-| Embedding | 把文字变成向量（数字数组） | `rag.py` → `get_embeddings()` |
-| Vector Store | 存储和检索向量 | `rag.py` → `build_vectorstore()` |
-| Retriever | 根据问题找最相关的文档块 | `rag.py` → `build_qa_chain()` 里的 retriever |
-| Prompt Template | 控制模型怎么回答 | `rag.py` → `build_qa_chain()` 里的 prompt |
-
-### 思考题（做完项目后试着回答）
-
-1. 为什么要把文档切块而不是整篇塞给模型？
-方便模型存储加上模型调用
-2. `CHUNK_SIZE` 和 `CHUNK_OVERLAP` 分别影响什么？
-CHUNK_SIZE管理切分的字符数、CHUNK_OVERLAP管理上下文的连贯
-3. 如果检索结果不准确，可以从哪些环节优化？
-CHUNK_SIZE优化切分的更仔细一点、CHUNK_OVERLAP的上下文不连贯可以提高字符保持连贯性
-4. 这个系统的"记忆"是什么？有长期记忆吗？
-向量数据库，只有向量数据库的记忆，没有上下文的记忆。
-
-## 下一步
-
-这个项目跑通后，下一步（项目二）要给它加上"工具调用"能力，让它不只能查文档，还能查天气、算数学、查数据库。
+### 验收标准
+- ✅ 能读取 PDF/TXT 文件
+- ✅ 输入问题，返回基于文档内容的回答
+- ✅ 回答能标注信息来源（哪个文档、哪一段）
 
 ---
 
-*开始你的 Agent 开发之旅吧！* 🚀
+## 项目二：带工具的对话 Agent（第 3-5 周）
+
+### 目标
+做一个能调用外部工具的 Agent，比如：查天气、算汇率、查数据库，用户用自然语言下指令，Agent 自己判断该调哪个工具。
+
+### 做完你会什么
+- Function Calling / Tool Calling 机制
+- Agent 决策循环（ReAct）
+- LangChain Agent 框架
+- 工具定义与异常处理
+
+### 知识点（边做边查）
+| 做的时候遇到 | 去学什么 |
+|-------------|---------|
+| 怎么让模型自己决定调哪个工具 | Function Calling 机制，工具用 JSON Schema 描述 |
+| Agent 怎么"思考-行动-观察" | ReAct 框架原理 |
+| 怎么串联多个工具 | LangChain Agent + Tool 注册机制 |
+| 工具调用报错了怎么办 | 异常兜底、重试、超时处理 |
+| 怎么记住用户之前说了什么 | 对话记忆（ConversationBufferMemory / Summary） |
+
+### 推荐工具集
+- 天气查询（接一个免费 API）
+- 汇率换算
+- SQLite 数据库查询
+- 计算器（复杂数学运算）
+
+### 验收标准
+- ✅ 用户说"北京明天天气怎么样"，Agent 自动调用天气工具
+- ✅ 用户说"帮我查一下上个月销售额"，Agent 生成 SQL 并查询
+- ✅ 工具调用失败时能友好提示而非崩溃
+
+---
+
+## 项目三：企业知识库 Agent（Web 版）（第 6-9 周）
+
+### 目标
+把项目一升级成带 Web 界面的完整知识库系统，支持文档上传、多轮对话、来源追溯。这个项目是简历核心亮点。
+
+### 做完你会什么
+- 完整 RAG 链路优化（重排序、混合检索）
+- Web 前后端开发
+- 流式输出
+- Docker 部署
+
+### 知识点（边做边查）
+| 做的时候遇到 | 去学什么 |
+|-------------|---------|
+| 检索不准怎么办 | 混合检索（向量+BM25关键词）、重排序（Reranker） |
+| 怎么切分更好 | 语义切分 vs 固定长度，按段落/标题切分 |
+| 知识库文档更新了怎么办 | 增量更新策略，用 hash 检测变更 |
+| 怎么搭前端 | Streamlit（最快）或 Gradio |
+| 怎么做流式回答 | SSE (Server-Sent Events) + FastAPI |
+| 怎么部署上线 | Docker + Docker Compose |
+
+### 技术栈
+- 后端：FastAPI + LangChain
+- 前端：vue+
+- 向量库：Chroma（开发）→ Milvus（生产演示）
+- 部署：Docker
+
+### 验收标准
+- ✅ 网页端上传文档 → 自动解析向量化
+- ✅ 多轮对话，支持追问
+- ✅ 回答标注引用来源
+- ✅ 有一个在线可访问的 Demo 链接
+
+---
+
+## 项目四：多 Agent 协作系统（第 10-12 周）
+
+### 目标
+做一个多 Agent 协作的复杂任务系统，比如"调研报告生成器"：一个 Agent 负责搜集信息，一个负责分析整理，一个负责写报告，一个负责审核质量。
+
+### 做完你会什么
+- 多 Agent 架构设计
+- LangGraph 状态编排
+- Agent 间通信与任务分发
+- MCP 协议（加分）
+
+### 知识点（边做边查）
+| 做的时候遇到 | 去学什么 |
+|-------------|---------|
+| 多个 Agent 怎么分工协作 | Multi-Agent 架构模式：串行/并行/层级 |
+| 怎么管理执行状态 | LangGraph 状态图、节点、条件路由 |
+| Agent 之间怎么传数据 | 共享状态、消息传递 |
+| 某个 Agent 出错了怎么办 | 失败重试、降级策略、人工介入节点 |
+| 怎么接入更多外部工具 | MCP 协议基础 |
+
+### 推荐选题（选一个）
+1. **调研报告 Agent**：搜索 → 整理 → 写报告 → 审核
+2. **代码助手 Agent**：需求分析 → 写代码 → 测试 → Review
+3. **客服分流 Agent**：意图识别 → 路由到不同专业 Agent
+
+### 验收标准
+- ✅ 至少 3 个 Agent 协作完成一个完整任务
+- ✅ 有状态追踪，能看到每个 Agent 的执行过程
+- ✅ 有错误处理和重试机制
+
+---
+
+## 学习资源速查
+
+| 需要什么 | 去哪里找 |
+|---------|---------|
+| LangChain 入门 | [官方教程](https://python.langchain.com/docs/get_started/) |
+| LangGraph 入门 | [官方文档](https://langchain-ai.github.io/langgraph/) |
+| RAG 实战 | [DeepLearning.AI 短课](https://www.deeplearning.ai/short-courses/)（免费） |
+| Prompt 工程 | [OpenAI 最佳实践](https://platform.openai.com/docs/guides/prompt-engineering) |
+| FastAPI 入门 | [官方教程](https://fastapi.tiangolo.com/tutorial/) |
+| Streamlit 入门 | [官方文档](https://docs.streamlit.io/) |
+| Agent 面试题 | 牛客网搜索"Agent 面经" |
+
+---
+
+## 每周时间分配建议
+
+```
+周一-周三  做项目（写代码、调 bug）    约 10h
+周四-周五  补知识（看文档、看教程）     约 6h
+周末       整理笔记 + 写 README        约 4h
+```
+
+## 里程碑检查
+
+| 时间点 | 你应该能做到 |
+|--------|-------------|
+| 第 2 周末 | 命令行 RAG 问答跑通 |
+| 第 5 周末 | 能调工具的 Agent 跑通 |
+| 第 9 周末 | 有 Web 界面的知识库上线 |
+| 第 12 周末 | 多 Agent 系统完成，开始投简历 |
