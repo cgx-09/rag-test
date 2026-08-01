@@ -8,3 +8,7 @@ test_chroma_db/
 # Python 缓存
 __pycache__/
 *.pyc
+*.pyo
+
+# VS Code 配置
+.vscode/

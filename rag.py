@@ -27,7 +27,7 @@ def get_llm() -> ChatOpenAI:
     """初始化大模型"""
     return ChatOpenAI(
         model=os.getenv("MODEL_NAME", "deepseek-chat"),
-        api_key=os.getenv("API_KEY"),  # DeepSeek 或 OpenAI 的 API Key
+        api_key=os.getenv("API_KEY"),  # DeepSeek 或 OpenAI 的 API Key可以忽略标红
         base_url=os.getenv("BASE_URL", "https://api.deepseek.com"),
         temperature=0.3,  # 低一点让回答更稳定
     )
