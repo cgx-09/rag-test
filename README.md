@@ -81,7 +81,7 @@
 
 ### 技术栈
 - 后端：FastAPI + LangChain
-- 前端：vue+
+- 前端：vue+vite
 - 向量库：Chroma（开发）→ Milvus（生产演示）
 - 部署：Docker
 

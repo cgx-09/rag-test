@@ -34,10 +34,15 @@ def get_llm() -> ChatOpenAI:
 
 
 def get_embeddings():
-    """使用本地 Ollama 的 BGE-M3 模型生成向量"""
+    """
+    使用本地 Ollama 的 BGE-M3 模型生成向量
+    模型与地址可通过环境变量覆盖（默认值即原硬编码值）
+    """
     return OllamaEmbeddings(
-        model="modelscope.cn/gpustack/bge-m3-GGUF:latest",
-        base_url="http://localhost:11434",  # Ollama 默认服务地址
+        model=os.getenv(
+            "EMBEDDING_MODEL", "modelscope.cn/gpustack/bge-m3-GGUF:latest"
+        ),
+        base_url=os.getenv("EMBEDDING_BASE_URL", "http://localhost:11434"),
     )
 
 

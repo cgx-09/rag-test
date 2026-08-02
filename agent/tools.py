@@ -104,24 +104,24 @@ schema_tool = {
 # ============================================================
 
 def get_real_weather(city: str) -> dict:
-    """天气查询的执行函数（配合 WeatherAPI）"""
+    """天气查询的执行函数（配合 OpenWeatherMap）"""
     api_key = os.getenv("WEATHER_API_KEY")
     if not api_key:
         return {"error": "未配置天气 API Key"}
-    
-    url = "https://api.weatherapi.com/v1/current.json"
-    params = {"key": api_key, "q": city, "lang": "zh"}
-    
+
+    url = "https://cn-api.openweathermap.org/data/2.5/weather"
+    params = {"q": city, "appid": api_key, "units": "metric", "lang": "zh_cn"}
+
     try:
         response = requests.get(url, params=params, timeout=20)
         response.raise_for_status()
         data = response.json()
         return {
             "city": city,
-            "temperature": data["current"]["temp_c"],
-            "condition": data["current"]["condition"]["text"],
-            "humidity": data["current"]["humidity"],
-            "wind_speed": data["current"]["wind_kph"],
+            "temperature": data["main"]["temp"],
+            "condition": data["weather"][0]["description"],
+            "humidity": data["main"]["humidity"],
+            "wind_speed": data["wind"]["speed"],
         }
     except Exception as e:
         return {"error": f"查询天气失败: {e}"}

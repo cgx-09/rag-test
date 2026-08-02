@@ -1,18 +1,81 @@
-# 环境变量（包含 API Key）
-.env
-
-# 向量数据库（包含文档内容）
-chroma_db/
-test_chroma_db/
-
-# Python 缓存
+# Python
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
-# VS Code 配置
+# Node / Vue
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+*.tsbuildinfo
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 数据库和向量存储
+*.db
+*.sqlite
+*.sqlite3
+chroma_db/
+chroma_db_test/
+test_chroma_db/
+uploads/
+data/uploads/
+data/chroma_db/
+data/docs_registry.json
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
 
-* text=auto
-*.py text eol=lf
-*.md text eol=lf
+# 构建产物
+dist/
+frontend/dist/
+frontend/node_modules/
+
+# 日志
+*.log
+logs/
+
+# 备份
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+
+# 密钥
+*.pem
+*.key
+*.crt
+*.p12

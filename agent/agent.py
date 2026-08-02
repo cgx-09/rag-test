@@ -41,7 +41,7 @@ def get_weather(city: str) -> str:
         condition = data["weather"][0]["description"]
         humidity = data["main"]["humidity"]
         wind = data["wind"]["speed"]
-        
+
         return f"{city} 当前天气：{condition}，温度 {temp}°C，湿度 {humidity}%，风速 {wind} m/s"
     
     except requests.exceptions.HTTPError as e:
